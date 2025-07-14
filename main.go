@@ -4,37 +4,44 @@ import (
 	"lotterySite/controller"
 	"lotterySite/dao/mysql"
 	"lotterySite/dao/redis"
+	"lotterySite/logger"
 	"fmt"
+	"lotterySite/setting"
 	"go.uber.org/zap"
 )
 
-func Init() error {
-    fmt.Println("开始初始化 MySQL")
-    if err := mysql.InitMySQL(); err != nil {
-        fmt.Println("MySQL 初始化失败:", err)
-        zap.L().Error("mysql init failed", zap.Error(err))
-        return err
-    }
-    fmt.Println("MySQL 初始化成功")
+func Init() {
 
-    fmt.Println("开始初始化 Redis")
-    if err := redis.InitRedis(); err != nil {
-        fmt.Println("Redis 初始化失败:", err)
-        zap.L().Error("redis init failed", zap.Error(err))
-        return err
+   
+  
+		if err := setting.Init("conf/config.yaml"); err!= nil {
+			zap.L().Error("config init failed", zap.Error(err))
+			return
+		}
+
+		if err := logger.Init(setting.Conf.LogConfig, setting.Conf.Mode); err != nil {
+			zap.L().Error("logger init failed", zap.Error(err))
+			return
+		}
+
+		 if err := mysql.InitMySQL(); err != nil { 
+        zap.L().Error("mysql init failed", zap.Error(err))
+        return 
     }
-    fmt.Println("Redis 初始化成功")
-    return nil
+  
+    if err := redis.InitRedis(); err != nil {       
+        zap.L().Error("redis init failed", zap.Error(err))
+        return
+    }
+
+
+
 }
 
 func main() {
-	fmt.Println("server start")
 
-	if err := Init(); err != nil {
-		zap.L().Error("init failed", zap.Error(err))
-		fmt.Println("init failed")
-		return
-	}
+
+	Init()
 	router := gin.Default()
 	fmt.Println("router init success")
 	router.GET("/goods", controller.GetAllGoods)

@@ -7,21 +7,28 @@ import (
 	"go.uber.org/zap"
 	"fmt"
 	"github.com/go-redis/redis"
+	"lotterySite/setting"
+
 )
 
 var Client *redis.Client
 
 func InitRedis() error {
 	Client = redis.NewClient(&redis.Options{
-		Addr: 	    		"localhost:6379",
-		Password:		 		"jh790613", // no password set
-		DB:       			0,  // use default DB
-		PoolSize: 			10, // 连接池大小
-		MinIdleConns: 	5, // 最小空闲连接数
+		Addr: 	    		fmt.Sprintf("%s:%d", setting.Conf.RedisConfig.Host, setting.Conf.RedisConfig.Port),
+		Password:		 		setting.Conf.RedisConfig.Password, 
+		DB:       			setting.Conf.RedisConfig.DB,
+		PoolSize: 			setting.Conf.RedisConfig.PoolSize, // 连接池大小
+		MinIdleConns: 	setting.Conf.RedisConfig.MinIdleConns, // 最小空闲连接数
 	})
+	fmt.Println(Client)
+	if _, err := Client.Ping().Result(); err != nil {
+		zap.L().Error("redis init error", zap.Error(err))
+		return err
+	}
 	ch := make(chan *model.Good, 100)
 	go func() {
-		fmt.Println("start get all goods from mysql")
+		
 		if err := mysql.GetAllGoods(ch); err!= nil {
 			zap.L().Error("mysql get all goods error", zap.Error(err))
 			fmt.Println(err)
