@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"lotterySite/dao/redis"
+	"lotterySite/dao/mysql"
 	"go.uber.org/zap"
 )
 
@@ -54,10 +55,33 @@ func Lottery(ctx *gin.Context) {
 
 }
 
-func GetAllGoods(ctx *gin.Context) {
-	goods, err := redis.GetAllGoods()
+func GetGoodById(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err!= nil {
+		zap.L().Error("GetGoodById 参数错误", zap.Error(err))
+		ctx.String(http.StatusOK, "参数错误")
+		return
+	}
+	goods, err := mysql.GetGoodDetailById(id)
 	if err!= nil {
 		ctx.String(http.StatusOK, "获取奖品库存失败")
+		return
+	}
+	ctx.JSON(http.StatusOK, goods)
+}
+
+func GetGoodDetailByPage(ctx *gin.Context) {
+	page, err := strconv.Atoi(ctx.Query("page"))
+	if err != nil {
+		page = 1
+	}
+	pageSize, err := strconv.Atoi(ctx.Query("pageSize"))
+	if err != nil {
+		pageSize = 10
+	}
+	goods, err := mysql.GetGoodDetailByPage(page, pageSize)
+	if err != nil {
+		ctx.String(http.StatusOK, "GetGoodDetailByPage 获取奖品库存失败")
 		return
 	}
 	ctx.JSON(http.StatusOK, goods)
