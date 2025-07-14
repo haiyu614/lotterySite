@@ -31,7 +31,6 @@ func InitRedis() error {
 		
 		if err := mysql.GetAllGoods(ch); err!= nil {
 			zap.L().Error("mysql get all goods error", zap.Error(err))
-			fmt.Println(err)
 			return
 		}
 	}()

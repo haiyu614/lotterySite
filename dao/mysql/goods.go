@@ -8,6 +8,8 @@ import (
 
 func GetAllGoods(ch chan<- *model.Good) error {
 	
+
+	// 分页查询适合于大数据量的查询，一次性查询所有数据会导致内存占用过高，导致系统崩溃
 	offset := 0
 	page_size := 500
 	query := "SELECT id, name, price, number, img_url FROM goods LIMIT ? OFFSET ?"
@@ -31,4 +33,25 @@ func GetAllGoods(ch chan<- *model.Good) error {
 	fmt.Println("ch Closed")
 	close(ch)
 	return nil
+}
+
+
+func GetGoodDetailById(id int) (*model.Good, error) {
+	var good model.Good
+	err := Db.Get(&good, "SELECT id, name, price, number, img_url FROM goods WHERE id = ?", id)
+	if err != nil {
+		zap.L().Error("GetGoodsById db.get error", zap.Error(err))
+		return nil, err
+	}
+	return &good, nil
+}
+
+func GetGoodDetailByPage(page int, pageSize int) ([]*model.Good, error) {
+	var goods []*model.Good
+	err := Db.Select(&goods, "SELECT id, name, price, number, img_url FROM goods LIMIT ? OFFSET ?", pageSize, (page-1)*pageSize)
+	if err != nil {
+		zap.L().Error("GetGoodsById db.get error", zap.Error(err))
+		return nil, err
+	}
+	return goods, nil
 }

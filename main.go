@@ -46,6 +46,6 @@ func main() {
 	fmt.Println("router init success")
 	router.GET("/goods", controller.GetAllGoods)
 	router.GET("/lottery", controller.Lottery)
-
+	router.GET("")
 	router.Run("localhost:8084")
 }
