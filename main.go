@@ -1,12 +1,14 @@
 package main
+
 import (
-	"github.com/gin-gonic/gin"
 	"lotterySite/controller"
 	"lotterySite/dao/mysql"
 	"lotterySite/dao/redis"
 	"lotterySite/logger"
-	"fmt"
+	"lotterySite/middleware"
 	"lotterySite/setting"
+
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -43,7 +45,10 @@ func main() {
 
 	Init()
 	router := gin.Default()
-	fmt.Println("router init success")
+	
+	router.Use(middleware.CORSMiddleware())
+	router.Use(logger.GinLogger(), logger.GinRecovery(true))
+
 	router.GET("/goods/:id", controller.GetGoodById)
 	router.GET("/goods", controller.GetGoodDetailByPage)
 	router.GET("/lottery", controller.Lottery)

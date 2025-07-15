@@ -1,2 +1,10 @@
 {"level":"INFO","time":"2025-07-14T20:46:14.863+0800","caller":"logger/logger.go:45","msg":"init logger success"}
 {"level":"INFO","time":"2025-07-14T21:28:15.845+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-14T21:29:25.194+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-14T21:54:19.372+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-14T21:56:49.435+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-14T21:57:09.091+0800","caller":"logger/logger.go:79","msg":"/goods","status":200,"method":"GET","path":"/goods","query":"page=2&pageSize=5","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","errors":"","cost":0.0005293}
+{"level":"INFO","time":"2025-07-14T22:05:28.711+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-14T22:18:51.043+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-15T21:32:29.413+0800","caller":"logger/logger.go:45","msg":"init logger success"}
+{"level":"INFO","time":"2025-07-15T21:36:18.047+0800","caller":"logger/logger.go:45","msg":"init logger success"}
