@@ -52,6 +52,7 @@ func main() {
 	router.GET("/goods/:id", controller.GetGoodById)
 	router.GET("/goods", controller.GetGoodDetailByPage)
 	router.GET("/lottery", controller.Lottery)
-	router.GET("")
+	router.GET("/goodsforlottery", controller.GetGoodsForLottery)
+
 	router.Run("localhost:8084")
 }

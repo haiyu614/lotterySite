@@ -86,3 +86,13 @@ func GetGoodDetailByPage(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, goods)
 }
+
+func GetGoodsForLottery(ctx *gin.Context) {
+	goods, err := redis.GetAllGoods()
+	if err != nil {
+		ctx.String(http.StatusOK, "GetGoodsForLottery 获取奖品库存失败")
+		return
+	}
+	goods = filterGoods(goods)
+	ctx.JSON(http.StatusOK, goods)
+}

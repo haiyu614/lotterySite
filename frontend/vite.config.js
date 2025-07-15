@@ -13,8 +13,6 @@ export default defineConfig({
     port: 5173,
     host: '0.0.0.0',
     strictPort: true,
-    // 移除https配置
-    // https: true, // 注释或删除该行
-    open: '/', // 指定打开根路径
+    open: '/'
   }
 });
